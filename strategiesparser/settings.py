@@ -68,10 +68,13 @@ DOWNLOADER_MIDDLEWARES = {
    'strategiesparser.middlewares.SeleniumMiddleware': 800
 }
 
-SELENIUM_DRIVER_NAME = 'firefox'  # 'chrome'
-SELENIUM_DRIVER_EXECUTABLE_PATH = './geckodriver'  # './chromedriver'
-SELENIUM_DRIVER_ARGUMENTS = ['set_window_size(1280, 720)']
-# ['start-maximazed'] # ['set_window_size(1280, 720)']
+# 'chrome' 'firefox'
+SELENIUM_DRIVER_NAME = 'chrome'
+# 'strategiesparser/chromedriver' './geckodriver'
+SELENIUM_DRIVER_EXECUTABLE_PATH = './chromedriver'
+# ['start-maximazed'] # '--window-size=375,667' '--headless'
+SELENIUM_DRIVER_ARGUMENTS = ['--window-size=1280,720']
+
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
