@@ -6,6 +6,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import strategiesparser.middlewares
 
 BOT_NAME = 'strategiesparser'
 
@@ -62,9 +63,15 @@ COOKIES_ENABLED = True
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'strategiesparser.middlewares.StrategiesparserDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   # 'strategiesparser.middlewares.StrategiesparserDownloaderMiddleware': 543,
+   'strategiesparser.middlewares.SeleniumMiddleware': 800
+}
+
+SELENIUM_DRIVER_NAME = 'firefox'  # 'chrome'
+SELENIUM_DRIVER_EXECUTABLE_PATH = './geckodriver'  # './chromedriver'
+SELENIUM_DRIVER_ARGUMENTS = ['set_window_size(1280, 720)']
+# ['start-maximazed'] # ['set_window_size(1280, 720)']
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
