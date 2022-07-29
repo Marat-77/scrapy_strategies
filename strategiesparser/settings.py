@@ -73,7 +73,7 @@ SELENIUM_DRIVER_NAME = 'chrome'
 # 'strategiesparser/chromedriver' './geckodriver'
 SELENIUM_DRIVER_EXECUTABLE_PATH = './chromedriver'
 # ['start-maximazed'] # '--window-size=375,667' '--headless'
-SELENIUM_DRIVER_ARGUMENTS = ['--window-size=1280,720']
+SELENIUM_DRIVER_ARGUMENTS = ['--window-size=1280,900']
 
 
 # Enable or disable extensions

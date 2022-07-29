@@ -14,6 +14,8 @@ from importlib import import_module
 from scrapy.exceptions import NotConfigured
 from scrapy.http import HtmlResponse
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common import action_chains
 
 from scrapy_selenium import SeleniumRequest
 
@@ -139,6 +141,9 @@ class SeleniumMiddleware:
             encoding='utf-8',
             request=request
         )
+
+    def click(self):
+        self.driver
 
     def spider_closed(self):
         """Shutdown the driver when spider is closed"""
