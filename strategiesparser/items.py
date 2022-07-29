@@ -27,7 +27,6 @@ def preprocess_description(value):
 
 
 class StrategiesparserItem(scrapy.Item):
-    # define the fields for your item here like:
     _id = scrapy.Field(output_processor=TakeFirst())
     strategy_link = scrapy.Field(output_processor=TakeFirst())
     title = scrapy.Field(output_processor=TakeFirst())

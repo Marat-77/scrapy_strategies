@@ -4,9 +4,6 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 from scrapy import signals
 
-# useful for handling different item types with a single interface
-# from itemadapter import is_item, ItemAdapter
-
 """This module contains the ``SeleniumMiddleware`` scrapy middleware"""
 
 from importlib import import_module
@@ -14,8 +11,6 @@ from importlib import import_module
 from scrapy.exceptions import NotConfigured
 from scrapy.http import HtmlResponse
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common import action_chains
 
 from scrapy_selenium import SeleniumRequest
 

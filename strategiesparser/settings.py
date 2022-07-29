@@ -23,7 +23,7 @@ LOG_ENABLED = True
 # WARNING - для предупреждающих сообщений
 # DEBUG - для сообщений отладки (рекомендуемый уровень для разработки)
 # INFO - для информационных сообщений (рекомендуемый для рабочего развертывания)
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

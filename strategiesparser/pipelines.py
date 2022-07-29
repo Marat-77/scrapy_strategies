@@ -5,12 +5,9 @@
 
 
 # useful for handling different item types with a single interface
-# from itemadapter import ItemAdapter
-# import scrapy
+
 
 import pymongo
-# from scrapy.pipelines.images import ImagesPipeline
-# from scrapy.utils.python import to_bytes
 from pymongo.errors import DuplicateKeyError
 
 
