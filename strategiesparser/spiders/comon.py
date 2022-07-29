@@ -1,8 +1,11 @@
+import time
+
 import scrapy
 from scrapy.http import HtmlResponse
 from scrapy_selenium import SeleniumRequest
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 import selenium
 
@@ -47,11 +50,20 @@ class ComonSpider(scrapy.Spider):
             # https://www.comon.ru/strategies/11537
             strategy_link = f'https://www.comon.ru{strategy_link}'
             print(strategy_link)
+            # chart_svg = (By.XPATH, '//div[@class="recharts-wrapper"]/*[local-name()="svg"]')
+            any_div = (By.XPATH, '//div/div')
             yield SeleniumRequest(url=strategy_link,
-                                  callback=self.parse_strategy_page)
-
+                                  callback=self.parse_strategy_page,
+                                  wait_time=10,
+                                  wait_until=EC.visibility_of_element_located(any_div))
     def parse_strategy_page(self, response: HtmlResponse):
         print(response)
+        # time.sleep(10)
+        # https://www.comon.ru/strategies/17353
+        id_strategy = response.url.split('https://www.comon.ru/strategies/')[-1]
+        print(id_strategy)
+        # with open(f'draft_{id_strategy}image.png', 'wb') as image_file:
+        #     image_file.write(response.meta['screenshot'])
         # print()
         # название стратегии:
         title = response.xpath('//h1/text()').get()
@@ -73,32 +85,54 @@ class ComonSpider(scrapy.Spider):
         # риск:
         risk_level = response.xpath('//p[contains(text(),"Риск")]/following-sibling::p/text()').get()
         # 'Консервативный'
-        # описание:
-        description = response.xpath('//h6[contains(text(), "Описание")]/following-sibling::div//text()').getall()
-        print()
-        # - много текста :)
-        # div_svg = response.xpath('//div[@class="recharts-wrapper"]').get()
+        # # --------------------------------------------------------------------------------------- * * *
+        # # описание:
+        # description = response.xpath('//h6[contains(text(), "Описание")]/following-sibling::div//text()').getall()
+        # # - много текста :)
+        # # --------------------------------------------------------------------------------------- * * *
         # график доходности:
+        # time.sleep(10)
+        # div_svg = response.xpath('//div[@class="recharts-wrapper"]').get()
         # chart_svg = response.xpath('//div[@class="recharts-wrapper"]/*[local-name()="svg"]').get()
-        chart_svg = (By.XPATH, '//div[@class="recharts-wrapper"]/*[local-name()="svg"]')
-        chart_svg = SeleniumRequest(
-            url=response.url,
-            wait_time=10,
-            wait_until=EC.visibility_of_element_located(chart_svg)
-        )
-        print()
-        # кнопка "ПОКАЗАТЕЛИ":
-        # button_indications = response.xpath(('//button/span[contains(text(), "Показатели")]/parent::button')).get()
+        # # chart_svg = (By.XPATH, '//div[@class="recharts-wrapper"]/*[local-name()="svg"]')
+        # # chart_svg = SeleniumRequest(
+        # #     url=response.url,
+        # #     wait_time=10,
+        # #     wait_until=EC.visibility_of_element_located(chart_svg)
+        # # )
+        # print()
+        # # with open(f'draft_chart_svg2{id_strategy}.svg', 'w') as svg_file:
+        # #     svg_file.write(chart_svg)
+        # with open(f'draft_div_svg_{id_strategy}.svg', 'w') as svg_file:
+        #     svg_file.write(div_svg)
+        # print()
+        # # ---------------------------------------------------------------------------------------
+        # # кнопка "ПОКАЗАТЕЛИ":
+        # # button_indications = response.xpath(('//button/span[contains(text(), "Показатели")]/parent::button')).get()
         button_indications = (
             By.XPATH,
             '//button/span[contains(text(), "Показатели")]/parent::button'
         )
-        button_indications = SeleniumRequest(
-            url=response.url,
-            wait_time=10,
-            wait_until=EC.element_to_be_clickable(button_indications)
-        )
-        # button_indications = ActionChains()
-        button_indications.click()
-        print()
+        driver = response.request.meta['driver']
+        wait = WebDriverWait(driver, 30)
+        # Do some stuff..
+        # Click a button.
+        # button = driver.get_element_by_xpath('//button/span[contains(text(), "Показатели")]/parent::button')
+        button = wait.until(EC.element_to_be_clickable(button_indications))
+        button.click()
+        # //p[contains(text(), "Тариф автоследования")]
+        check_tariff = '//p[contains(text(), "Тариф автоследования")]'
+        wait.until(EC.visibility_of_element_located((By.XPATH, check_tariff)))
+        check_tariff = response.xpath(check_tariff).get()
+        if check_tariff:
+            print('Ok!')
+    # button_indications = SeleniumRequest(
+        #     url=response.url,
+        #     wait_time=10,
+        #     wait_until=EC.element_to_be_clickable(button_indications)
+        # )
+        # # button_indications = ActionChains()
+        # button_indications.click()
+        # print()
+        # # ---------------------------------------------------------------------------------------
 
