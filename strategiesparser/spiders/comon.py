@@ -109,14 +109,27 @@ class ComonSpider(scrapy.Spider):
         # # ---------------------------------------------------------------------------------------
         # # кнопка "ПОКАЗАТЕЛИ":
         # # button_indications = response.xpath(('//button/span[contains(text(), "Показатели")]/parent::button')).get()
+
+        driver = response.request.meta['driver']
+        wait = WebDriverWait(driver, 30)
+
+        chart_svg = (By.XPATH, '//div[@class="recharts-wrapper"]/*[local-name()="svg"]')
+        # chart_svg = SeleniumRequest(
+        #     url=response.url,
+        #     wait_time=10,
+        #     wait_until=EC.visibility_of_element_located(chart_svg)
+        # )
+        time.sleep(5)
+        # text_mail = WebDriverWait(driver, timeout=10).until(
+        #     EC.presence_of_element_located((By.CLASS_NAME, 'letter__body'))).get_attribute('innerHTML')
+        chart_svg = wait.until(EC.presence_of_element_located(chart_svg)).get_attribute('outerHTML')
+        with open(f'draft_chart_svg2{id_strategy}.svg', 'w') as svg_file:
+            svg_file.write(chart_svg)
+
         button_indications = (
             By.XPATH,
             '//button/span[contains(text(), "Показатели")]/parent::button'
         )
-        driver = response.request.meta['driver']
-        wait = WebDriverWait(driver, 30)
-        # Do some stuff..
-        # Click a button.
         # button = driver.get_element_by_xpath('//button/span[contains(text(), "Показатели")]/parent::button')
         button = wait.until(EC.element_to_be_clickable(button_indications))
         button.click()
