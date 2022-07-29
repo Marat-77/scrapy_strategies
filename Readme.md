@@ -1,33 +1,30 @@
 # Получение информации о имеющиихся стратегиях с сайта "comon.ru"
 
-### Получаем данные: ?????????????????
-- название товаров;
-- изображения товаров;
-- ссылки на товары;
-- цены товаров (без скидки/со скидкой);
-- характеристики товаров.
+### Получаем данные:
+- id стратегии
+- ссылка на стратегию
+- название стратегии
+- ссылка на автора стратегии
+- автор стратегии
+- количество подписчиков
+- доходность за год
+- минимальная сумма
+- максимальная просадка
+- риск
+- описание
 
 ### Обработанные данные сохраняем в базу данных MongoDB.
-
-Изображения сохраняются в ```productsparser/prod_images/full/```
-* можно указать иной путь в ```productsparser/settings.py```:
-```python
-IMAGES_STORE = 'prod_images'
-```
-Для каждого товара своя подпапка с изображениями ```productsparser/prod_images/full/{код товара}/```
-
-Код товара используется и в базе данных в качестве ```'_id'```
-
-В базу данных сохраняется путь к файлу изображения.
+**comon_db**
 
 ---
 ## Для работы необходимо:
 
-1. Установить **scrapy**, **pymongo** и **pillow**:
+1. Установить **scrapy**, **selenium**, **scrapy-selenium** и **pymongo**:
 ```commandline
 pip install scrapy
+pip install selenium
+pip install scrapy-selenium
 pip install pymongo
-pip install pillow ------------------------?????????????????????????????
 ```
 или из файла ```requirements.txt```:
 ```commandline
@@ -41,7 +38,7 @@ python -m pip install -r requirements.txt
 ```commandline
 docker run -d --name mongo_scrap -p 27017:27017 -v mongodb_scrap:/data/db mongo
 ```
-В файле ```productsparser/settings.py``` необходимо указать IP-адрес и порт сервера MongoDB:
+3. В файле ```productsparser/settings.py``` необходимо указать IP-адрес и порт сервера MongoDB:
 ```python
 # Настройки для MongoDB:
 MONGO_HOST = '192.168.2.230'
@@ -55,4 +52,4 @@ MONGO_DATABASE = 'comon_db'
 ```python
 MONGO_COLLECTION = 'strategies'
 ```
-3. запустите ```productsparser/runner.py```
+4. запустите ```productsparser/runner.py```
