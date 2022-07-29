@@ -2,7 +2,14 @@ import time
 
 import scrapy
 from scrapy.http import HtmlResponse
+from scrapy.utils.project import get_project_settings
+
+from strategiesparser.items import StrategiesparserItem
+from scrapy.loader import ItemLoader
 from scrapy_selenium import SeleniumRequest
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -24,7 +31,7 @@ class ComonSpider(scrapy.Spider):
             yield SeleniumRequest(url=url)
 
     def parse(self, response: HtmlResponse):
-        # print(response.status)
+        print(response.status)
         pages_buttons = response.xpath(
             '//nav/ul/li/button/text()'
         ).getall()
@@ -46,106 +53,113 @@ class ComonSpider(scrapy.Spider):
         # print(len(strategies_links))
         # print()
         for strategy_link in strategies_links:
-            print(strategy_link)
+            # print(strategy_link)
             # https://www.comon.ru/strategies/11537
             strategy_link = f'https://www.comon.ru{strategy_link}'
-            print(strategy_link)
+            # print(strategy_link)
             # chart_svg = (By.XPATH, '//div[@class="recharts-wrapper"]/*[local-name()="svg"]')
             any_div = (By.XPATH, '//div/div')
             yield SeleniumRequest(url=strategy_link,
                                   callback=self.parse_strategy_page,
                                   wait_time=10,
                                   wait_until=EC.visibility_of_element_located(any_div))
+
     def parse_strategy_page(self, response: HtmlResponse):
-        print(response)
+        loader = ItemLoader(
+            item=StrategiesparserItem(),
+            response=response
+        )
+        # print(response)
         # time.sleep(10)
         # https://www.comon.ru/strategies/17353
-        id_strategy = response.url.split('https://www.comon.ru/strategies/')[-1]
-        print(id_strategy)
-        # with open(f'draft_{id_strategy}image.png', 'wb') as image_file:
-        #     image_file.write(response.meta['screenshot'])
+        # id_strategy = response.url.split('https://www.comon.ru/strategies/')[-1]
+        # print(id_strategy)
+        loader.add_value('_id', response.url.split('https://www.comon.ru/strategies/')[-1])
+
+        # strategy_link
+        loader.add_value('strategy_link', response.url)
         # print()
+
         # название стратегии:
-        title = response.xpath('//h1/text()').get()
+        # title = response.xpath('//h1/text()').get()
+        loader.add_xpath('title', '//h1/text()')
+
         # ссылка на автора стратегии:
-        author_link = response.xpath('//div[@class="MuiCardHeader-content"]/span/a/@href').get()
+        # author_link = response.xpath('//div[@class="MuiCardHeader-content"]/span/a/@href').get()
+        loader.add_xpath('author_link', '//div[@class="MuiCardHeader-content"]/span/a/@href')
+
         # автор стратегии:
-        author_name = response.xpath('//div[@class="MuiCardHeader-content"]/span/a/span/text()').get()
+        # author_name = response.xpath('//div[@class="MuiCardHeader-content"]/span/a/span/text()').get()
+        loader.add_xpath('author_name', '//div[@class="MuiCardHeader-content"]/span/a/span/text()')
+
         # количество подписчиков:
-        subscribers = response.xpath('//div[@class="MuiCardHeader-content"]/p/text()[2]').get()
+        # subscribers = response.xpath('//div[@class="MuiCardHeader-content"]/p/text()[2]').get()
+        loader.add_xpath('subscribers', '//div[@class="MuiCardHeader-content"]/p/text()[2]')
+
         # доходность за год:
-        year_profit = response.xpath('//p[contains(text(),"Доходность за год")]/following-sibling::p/span/text()').getall()
+        # year_profit = response.xpath('//p[contains(text(),"Доходность за год")]/following-sibling::p/span/text()').getall()
         # [' -34', ' ', '%']
+        loader.add_xpath('year_profit', '//p[contains(text(),"Доходность за год")]/following-sibling::p/span/text()')
+
         # минимальная сумма:
-        min_deposit = response.xpath('//p[contains(text(),"Минимальная сумма")]/following-sibling::p/span/text()').getall()
+        # min_deposit = response.xpath('//p[contains(text(),"Минимальная сумма")]/following-sibling::p/span/text()').getall()
+        loader.add_xpath('min_deposit', '//p[contains(text(),"Минимальная сумма")]/following-sibling::p/span/text()')
         # ['35 000', ' ', '₽']
+
         # максимальная просадка:
-        max_loss = response.xpath('//p[contains(text(),"Максимальная просадка")]/following-sibling::p/span/text()').getall()
+        # max_loss = response.xpath('//p[contains(text(),"Максимальная просадка")]/following-sibling::p/span/text()').getall()
         # [' -49', ' ', '%']
+        loader.add_xpath('max_loss', '//p[contains(text(),"Максимальная просадка")]/following-sibling::p/span/text()')
+
         # риск:
-        risk_level = response.xpath('//p[contains(text(),"Риск")]/following-sibling::p/text()').get()
+        # risk_level = response.xpath('//p[contains(text(),"Риск")]/following-sibling::p/text()').get()
         # 'Консервативный'
+        loader.add_xpath('risk_level', '//p[contains(text(),"Риск")]/following-sibling::p/text()')
+
         # # --------------------------------------------------------------------------------------- * * *
         # # описание:
         # description = response.xpath('//h6[contains(text(), "Описание")]/following-sibling::div//text()').getall()
+        loader.add_xpath('description', '//h6[contains(text(), "Описание")]/following-sibling::div//text()')
         # # - много текста :)
         # # --------------------------------------------------------------------------------------- * * *
-        # график доходности:
-        # time.sleep(10)
-        # div_svg = response.xpath('//div[@class="recharts-wrapper"]').get()
-        # chart_svg = response.xpath('//div[@class="recharts-wrapper"]/*[local-name()="svg"]').get()
-        # # chart_svg = (By.XPATH, '//div[@class="recharts-wrapper"]/*[local-name()="svg"]')
-        # # chart_svg = SeleniumRequest(
-        # #     url=response.url,
-        # #     wait_time=10,
-        # #     wait_until=EC.visibility_of_element_located(chart_svg)
-        # # )
-        # print()
-        # # with open(f'draft_chart_svg2{id_strategy}.svg', 'w') as svg_file:
-        # #     svg_file.write(chart_svg)
-        # with open(f'draft_div_svg_{id_strategy}.svg', 'w') as svg_file:
-        #     svg_file.write(div_svg)
-        # print()
-        # # ---------------------------------------------------------------------------------------
+
+        # # # ---------------------------------------------------------------------------------------
+        # # driver = response.request.meta['driver']
+        # webdriver_setting = get_project_settings().get('SELENIUM_DRIVER_EXECUTABLE_PATH')
+        # s = Service(webdriver_setting)
+        # driver = webdriver.Chrome(service=s)
+        # driver.implicitly_wait(30)
+        # wait = WebDriverWait(driver, 30)
+        # driver.get(response.url)
+        #
+        # # set window position 0, 0
+        # driver.set_window_position(0, 0)
+        # # window size 1280 720
+        # driver.set_window_size(1280, 900)
+        #
         # # кнопка "ПОКАЗАТЕЛИ":
-        # # button_indications = response.xpath(('//button/span[contains(text(), "Показатели")]/parent::button')).get()
-
-        driver = response.request.meta['driver']
-        wait = WebDriverWait(driver, 30)
-
-        chart_svg = (By.XPATH, '//div[@class="recharts-wrapper"]/*[local-name()="svg"]')
-        # chart_svg = SeleniumRequest(
-        #     url=response.url,
-        #     wait_time=10,
-        #     wait_until=EC.visibility_of_element_located(chart_svg)
+        # button_indications = (
+        #     By.XPATH,
+        #     '//button/span[contains(text(), "Показатели")]/parent::button'
         # )
-        time.sleep(5)
-        # text_mail = WebDriverWait(driver, timeout=10).until(
-        #     EC.presence_of_element_located((By.CLASS_NAME, 'letter__body'))).get_attribute('innerHTML')
-        chart_svg = wait.until(EC.presence_of_element_located(chart_svg)).get_attribute('outerHTML')
-        with open(f'draft_chart_svg2{id_strategy}.svg', 'w') as svg_file:
-            svg_file.write(chart_svg)
-
-        button_indications = (
-            By.XPATH,
-            '//button/span[contains(text(), "Показатели")]/parent::button'
-        )
-        # button = driver.get_element_by_xpath('//button/span[contains(text(), "Показатели")]/parent::button')
-        button = wait.until(EC.element_to_be_clickable(button_indications))
-        button.click()
-        # //p[contains(text(), "Тариф автоследования")]
-        check_tariff = '//p[contains(text(), "Тариф автоследования")]'
-        wait.until(EC.visibility_of_element_located((By.XPATH, check_tariff)))
-        check_tariff = response.xpath(check_tariff).get()
-        if check_tariff:
-            print('Ok!')
-    # button_indications = SeleniumRequest(
-        #     url=response.url,
-        #     wait_time=10,
-        #     wait_until=EC.element_to_be_clickable(button_indications)
+        # button = wait.until(EC.element_to_be_clickable(button_indications))
+        # button.click()
+        #
+        # # theme = WebDriverWait(driver, timeout=10).until(
+        # #     EC.presence_of_element_located((By.CLASS_NAME, 'thread-subject'))).text
+        # # //p[contains(text(),'Структура')]/following-sibling::div//span[text()]
+        # structure = (
+        #     By.XPATH,
+        #     '//p[contains(text(),"Структура")]/following-sibling::div//span[text()]'
         # )
-        # # button_indications = ActionChains()
-        # button_indications.click()
-        # print()
-        # # ---------------------------------------------------------------------------------------
-
+        # structure = wait.until(EC.presence_of_element_located(structure)).text
+        #
+        # # # //p[contains(text(), "Тариф автоследования")]
+        # # check_tariff = '//p[contains(text(), "Тариф автоследования")]'
+        # # wait.until(EC.visibility_of_element_located((By.XPATH, check_tariff)))
+        # # check_tariff = response.xpath(check_tariff).get()
+        # # if check_tariff:
+        # #     print('Ok!')
+        # # print()
+        # # # ---------------------------------------------------------------------------------------
+        yield loader.load_item()
