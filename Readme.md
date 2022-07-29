@@ -34,11 +34,16 @@ pip install -r requirements.txt
 ```commandline
 python -m pip install -r requirements.txt
 ```
-2. Запустить контейнер с MongoDB:
+
+2. Скачать и распаковать драйвер для вашего браузера в папку с проектом
+
+*Можно найти на странице: https://www.selenium.dev/documentation/webdriver/getting_started/install_drivers/*
+
+3. Запустить контейнер с MongoDB:
 ```commandline
 docker run -d --name mongo_scrap -p 27017:27017 -v mongodb_scrap:/data/db mongo
 ```
-3. В файле ```productsparser/settings.py``` необходимо указать IP-адрес и порт сервера MongoDB:
+4. В файле ```productsparser/settings.py``` необходимо указать IP-адрес и порт сервера MongoDB:
 ```python
 # Настройки для MongoDB:
 MONGO_HOST = '192.168.2.230'
@@ -52,4 +57,4 @@ MONGO_DATABASE = 'comon_db'
 ```python
 MONGO_COLLECTION = 'strategies'
 ```
-4. запустите ```productsparser/runner.py```
+5. запустите ```productsparser/runner.py```
