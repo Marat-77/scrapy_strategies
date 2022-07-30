@@ -43,18 +43,20 @@ python -m pip install -r requirements.txt
 ```commandline
 docker run -d --name mongo_scrap -p 27017:27017 -v mongodb_scrap:/data/db mongo
 ```
+
 4. В файле ```strategiesparser/settings.py``` необходимо указать IP-адрес и порт сервера MongoDB:
 ```python
 # Настройки для MongoDB:
 MONGO_HOST = '192.168.2.230'
 MONGO_PORT = 27017
 ```
-Так же можно указать базу данных (comon_db):
+Так же можно указать свою базу данных (comon_db):
 ```python
 MONGO_DATABASE = 'comon_db'
 ```
-и коллекцию:
+и свою коллекцию:
 ```python
 MONGO_COLLECTION = 'strategies'
 ```
+
 5. запустите ```strategiesparser/runner.py```
