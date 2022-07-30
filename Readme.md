@@ -1,46 +1,11 @@
 # Получение информации об имеющихся стратегиях с сайта "comon.ru"
-<svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" role="img">
-    <rect x="0" y="0" rx="5" ry="5" width="60" height="20" fill="#0d1117"/>
-    <rect x="1" y="1" rx="5" ry="5" width="58" height="18" fill="white"/>
-    <rect x="2" y="2" rx="5" ry="5" width="56" height="16" fill="#0d1117"/>
-    <text font-size="14" text-anchor="start" x="5" y="14" fill="white">Python</text>
-</svg>
-<svg xmlns="http://www.w3.org/2000/svg" width="62" height="20" role="img">
-    <rect x="0" y="0" rx="5" ry="5" width="62" height="20" fill="#0d1117"/>
-    <rect x="1" y="1" rx="5" ry="5" width="60" height="18" fill="white"/>
-    <rect x="2" y="2" rx="5" ry="5" width="58" height="16" fill="#0d1117"/>
-    <text font-size="14" text-anchor="start" x="5" y="14" fill="white">Docker</text>
-</svg>
-<svg xmlns="http://www.w3.org/2000/svg" width="72" height="20" role="img">
-    <rect x="0" y="0" rx="5" ry="5" width="72" height="20" fill="#0d1117"/>
-    <rect x="1" y="1" rx="5" ry="5" width="70" height="18" fill="white"/>
-    <rect x="2" y="2" rx="5" ry="5" width="68" height="16" fill="#0d1117"/>
-    <text font-size="14" text-anchor="start" x="5" y="14" fill="white">MongoDB</text>
-</svg>
-<svg xmlns="http://www.w3.org/2000/svg" width="70" height="20" role="img">
-    <rect x="0" y="0" rx="5" ry="5" width="70" height="20" fill="#0d1117"/>
-    <rect x="1" y="1" rx="5" ry="5" width="68" height="18" fill="white"/>
-    <rect x="2" y="2" rx="5" ry="5" width="66" height="16" fill="#0d1117"/>
-    <text font-size="14" text-anchor="start" x="5" y="14" fill="white">PyMongo</text>
-</svg>
-<svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" role="img">
-    <rect x="0" y="0" rx="5" ry="5" width="60" height="20" fill="#0d1117"/>
-    <rect x="1" y="1" rx="5" ry="5" width="58" height="18" fill="white"/>
-    <rect x="2" y="2" rx="5" ry="5" width="56" height="16" fill="#0d1117"/>
-    <text font-size="14" text-anchor="start" x="5" y="14" fill="white">Scrapy</text>
-</svg>
-<svg xmlns="http://www.w3.org/2000/svg" width="80" height="20" role="img">
-    <rect x="0" y="0" rx="5" ry="5" width="80" height="20" fill="#0d1117"/>
-    <rect x="1" y="1" rx="5" ry="5" width="78" height="18" fill="white"/>
-    <rect x="2" y="2" rx="5" ry="5" width="76" height="16" fill="#0d1117"/>
-    <text font-size="14" text-anchor="start" x="5" y="14" fill="white">Selenium</text>
-</svg>
-<svg xmlns="http://www.w3.org/2000/svg" width="138" height="20" role="img">
-    <rect x="0" y="0" rx="5" ry="5" width="138" height="20" fill="#0d1117"/>
-    <rect x="1" y="1" rx="5" ry="5" width="136" height="18" fill="white"/>
-    <rect x="2" y="2" rx="5" ry="5" width="134" height="16" fill="#0d1117"/>
-    <text font-size="14" text-anchor="start" x="5" y="14" fill="white">Scrapy-Selenium</text>
-</svg>
+<img src="./img/python.svg">
+<img src="./img/docker.svg">
+<img src="./img/mongodb.svg">
+<img src="./img/pymongo.svg">
+<img src="./img/scrapy.svg">
+<img src="./img/selenium.svg">
+<img src="./img/scrapy-selenium.svg">
 
 ### Получаем данные:
 - id стратегии
