@@ -6,6 +6,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import strategiesparser.middlewares
 
 BOT_NAME = 'strategiesparser'
 
@@ -22,7 +23,7 @@ LOG_ENABLED = True
 # WARNING - для предупреждающих сообщений
 # DEBUG - для сообщений отладки (рекомендуемый уровень для разработки)
 # INFO - для информационных сообщений (рекомендуемый для рабочего развертывания)
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -37,7 +38,7 @@ CONCURRENT_REQUESTS = 8
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 2
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -62,9 +63,18 @@ COOKIES_ENABLED = True
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'strategiesparser.middlewares.StrategiesparserDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   # 'strategiesparser.middlewares.StrategiesparserDownloaderMiddleware': 543,
+   'strategiesparser.middlewares.SeleniumMiddleware': 800
+}
+
+# 'chrome' 'firefox'
+SELENIUM_DRIVER_NAME = 'chrome'
+# 'strategiesparser/chromedriver' './geckodriver'
+SELENIUM_DRIVER_EXECUTABLE_PATH = './chromedriver'
+# ['start-maximazed'] # '--window-size=375,667' '--headless'
+SELENIUM_DRIVER_ARGUMENTS = ['--window-size=1280,910']
+
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -104,4 +114,3 @@ MONGO_HOST = '192.168.2.230'
 MONGO_PORT = 27017
 MONGO_DATABASE = 'comon_db'
 MONGO_COLLECTION = 'strategies'
-# MONGO_DUPLICATES = 'duplicates'
