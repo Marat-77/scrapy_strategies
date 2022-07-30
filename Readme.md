@@ -1,6 +1,8 @@
 # Получение информации об имеющихся стратегиях с сайта "comon.ru"
+
 ---
 <img src="./img/python.svg"> <img src="./img/docker.svg"> <img src="./img/mongodb.svg"> <img src="./img/pymongo.svg"> <img src="./img/scrapy.svg"> <img src="./img/selenium.svg"> <img src="./img/scrapy-selenium.svg">
+
 ---
 
 ### Получаем данные:
